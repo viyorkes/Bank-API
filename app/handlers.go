@@ -2,7 +2,7 @@ package app
 
 import (
 	"encoding/json"
-	"fmt"
+	"github.com/viyorkes/Bank-API/service"
 	"net/http"
 )
 
@@ -14,25 +14,28 @@ type Customer struct{
 	Zipcode  string `json:"zip_code"`
 }
 
-func greet(w http.ResponseWriter, r *http.Request){
+type  CustomerHandlers struct{
 
-	fmt.Fprint(w,"hello")
-
-
-
+	service service.CustomerService
 }
 
 
 
-func getAllCustomers(w http.ResponseWriter, r *http.Request){
+func (ch* CustomerHandlers)getAllCustomers(w http.ResponseWriter, r *http.Request){
 
-	customers :=[]Customer{
-		{"teste1", "teste-city","00000009"},
-		{"teste2", "teste-city2","00000008"},
+	//customers :=[]Customer{
+	//	{"teste1", "teste-city","00000009"},
+	//	{"teste2", "teste-city2","00000008"},
+	//
+	//}
 
-	}
-
+	customers, _ :=ch.service.GetAllCustomer()
 	w.Header().Add("Content-Type","application/json")
 	json.NewEncoder(w).Encode(customers)
 
 }
+
+
+
+
+
