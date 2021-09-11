@@ -1,26 +1,12 @@
 package main
 
-import (
-	"fmt"
-	"log"
-	"net/http"
-)
 
+import "github.com/viyorkes/Bank-API/app"
 func main(){
 
 
 
-	http.HandleFunc("/greet", greet)
-
-	log.Fatal(http.ListenAndServe("localhost:8000",nil))
-
+app.Start()
 
 }
 
-func greet(w http.ResponseWriter, r *http.Request){
-
-	fmt.Fprint(w,"hello")
-
-
-
-}
