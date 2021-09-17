@@ -3,8 +3,8 @@ package errs
 import "net/http"
 
 type AppError struct{
-	Code int
-	Message string
+	Code int  `json:"omitempy"`
+	Message string `json:"message"`
 }
 
 
@@ -16,6 +16,15 @@ func  NewNotFoundErrors(message string) *AppError{
 
 	}
 }
+
+func (e AppError) AsMessage() *AppError {
+
+	return &AppError{
+
+		Message: e.Message,
+	}
+}
+
 
 func  NewInternalServerErrors(message string) *AppError{
 
