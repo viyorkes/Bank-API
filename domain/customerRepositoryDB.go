@@ -3,6 +3,7 @@ package domain
 import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/viyorkes/Bank-API/errs"
 	"log"
 	"time"
 )
@@ -42,16 +43,22 @@ func (d CustomerRepositoryDB) FindAll() ([]Customer, error){
 }
 
 
-func(d CustomerRepositoryDB) ById(id string) (*Customer, error) {
+func(d CustomerRepositoryDB) ById(id string) (*Customer, *errs.AppError) {
 
 	customerSql := "select customer_id, name, city, zipcode, date_of_birth, status from customers where customer_id = ?"
 
 	row := d.db.QueryRow(customerSql,id)
 	var c Customer
 	err := row.Scan(&c.Id, &c.Name, &c.City, &c.DateOfBirth, &c.Zipcode, &c.status)
-	if err != nil{
-		log.Println("error while scanning customer " + err.Error())
-		return nil,err
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, errs.NewNotFoundErrors("Customer not fFOUND")
+
+		} else {
+			log.Println("error while scanning customer " + err.Error())
+			return nil,errs.NewInternalServerErrors("internal server error ")
+		}
+
 	}
 
 	return &c, nil

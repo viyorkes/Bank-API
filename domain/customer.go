@@ -1,5 +1,6 @@
 package domain
 
+import "github.com/viyorkes/Bank-API/errs"
 
 type Customer struct{
     Id string
@@ -14,6 +15,6 @@ type Customer struct{
 type CustomerRepository interface{
 
 	FindAll() ([]Customer, error)
-	ById(string)(*Customer, error)
+	ById(string)(*Customer, *errs.AppError)
 }
 
